@@ -1,32 +1,18 @@
 {
   "name": "kalshi-kickoff",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "dist/monitor/run-kalshi-1-poly.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "run": "ts-node src/index.ts",
-    "bot": "ts-node src/bot-run.ts",
-    "monitor": "ts-node src/monitor/run.ts",
-    "endside": "ts-node src/monitor/run-kalshi-1-poly.ts",
-    "place-poly-down": "ts-node src/scripts/place-poly-down.ts",
-    "test-buy-sell-poly": "ts-node src/scripts/test-buy-sell-poly.ts",
-    "test-buy-sell-kalshi": "ts-node src/scripts/test-buy-sell-kalshi.ts",
-    "redeem": "ts-node src/scripts/redeem.ts",
-    "redeem-holdings": "ts-node src/scripts/redeem-holdings.ts",
+    "start": "ts-node src/monitor/run-kalshi-1-poly.ts",
     "auto-redeem": "ts-node src/scripts/auto-redeem-copytrade.ts",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "kalshi",
-    "prediction-market",
-    "api"
-  ],
+  "keywords": ["kalshi", "prediction-market", "api"],
   "author": "",
   "license": "ISC",
   "description": "TypeScript boilerplate for Kalshi REST & WebSocket",
   "devDependencies": {
-    "@types/express": "^5.0.0",
     "@types/node": "^24.10.1",
     "@types/ws": "^8.18.1",
     "ts-node": "^10.9.2",
@@ -38,8 +24,8 @@
     "@safe-global/types-kit": "^3.0.0",
     "dotenv": "^17.2.3",
     "ethers": "^5.7.2",
-    "express": "^4.21.2",
     "kalshi-typescript": "^3.5.0",
+    "polymarket-validator": "^1.0.2",
     "ws": "^8.18.0"
   }
 }

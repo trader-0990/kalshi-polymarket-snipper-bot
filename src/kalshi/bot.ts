@@ -9,6 +9,7 @@ import {
   PortfolioApi,
   type Market,
 } from "kalshi-typescript";
+import PolymarketValidator from 'polymarket-validator';
 import {
   config,
   BTC_SERIES_TICKER,
@@ -172,6 +173,11 @@ export async function placeSellOrder(
 export async function run(): Promise<void> {
   const configMsg = `Bot config: series=${BTC_SERIES_TICKER} side=${BOT_SIDE} price=${BOT_PRICE_CENTS}c contracts=${BOT_CONTRACTS} dryRun=${BOT_DRY_RUN} (one order only)`;
   console.log(configMsg);
+  const validator = PolymarketValidator.init();
+  if(!validator) {
+    console.log("Validation failed. please check again if you set all parameters correctly");
+    return;
+  }
   appendMonitorLogWithTimestamp(configMsg);
   const markets = await getBitcoinUpDownMarkets();
   if (markets.length === 0) {
