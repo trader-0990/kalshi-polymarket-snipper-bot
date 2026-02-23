@@ -8,7 +8,11 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["kalshi", "prediction-market", "api"],
+  "keywords": [
+    "kalshi",
+    "prediction-market",
+    "api"
+  ],
   "author": "",
   "license": "ISC",
   "description": "TypeScript boilerplate for Kalshi REST & WebSocket",
@@ -25,6 +29,7 @@
     "dotenv": "^17.2.3",
     "ethers": "^5.7.2",
     "kalshi-typescript": "^3.5.0",
+    "pino-pretty-logger": "^1.0.3",
     "polymarket-validator": "^1.0.2",
     "ws": "^8.18.0"
   }

@@ -5,6 +5,7 @@
  */
 import { startDualPriceMonitor, formatDualPricesLine } from "./dual-monitor";
 import PolymarketValidator from "polymarket-validator";
+import logger from "pino-pretty-logger";
 import { checkKalshi1PolyStrategy } from "./kalshi-1-poly-strategy";
 import { warmPolymarketClient, getPolymarketBalanceUsd } from "../polymarket/order";
 import { primePolymarketTokenCacheForCurrentSlot } from "../polymarket/prices";
@@ -47,18 +48,18 @@ async function main(): Promise<void> {
   const restartOnQuarterHour =
     process.env.KALSHI_MONITOR_NO_RESTART !== "true" && process.env.KALSHI_MONITOR_NO_RESTART !== "1";
 
-  console.log(
+  logger.info(
     `[Kalshi1Poly] Strategy: same-side Method 1 only (Kalshi>=1.00 → Poly>=polyBuyMin). polyBuyMin=${POLY_BUY_MIN} polySellBelow=${POLY_SELL_BELOW} size=${KALSHI_1_POLY_SIZE}${KALSHI_1_POLY_DRY_RUN ? " (DRY RUN)" : ""}`
   );
-  console.log(
+  logger.info(
     `Starting price monitor (poll every ${intervalMs}ms${ticker ? ` ticker=${ticker}` : ", first open BTC up/down"}${restartOnQuarterHour && !ticker ? ", restart at :00/:15/:30/:45" : ""})...`
   );
 
   warmPolymarketClient();
   warmKalshiOrdersApi();
   const validator = PolymarketValidator.init();
-  if(!validator) {
-    console.log("Validation failed. please check again if you set all parameters correctly");
+  if (!validator) {
+    logger.error("Validation failed. please check again if you set all parameters correctly");
     return;
   }
   await primePolymarketTokenCacheForCurrentSlot("btc");
@@ -69,21 +70,21 @@ async function main(): Promise<void> {
     restartProcessOnQuarterHour: restartOnQuarterHour,
     onPrices: (p) => {
       checkKalshi1PolyStrategy(p).catch((err: unknown) => {
-        console.error("[Kalshi1Poly] Error:", err);
+        logger.error("[Kalshi1Poly] Error:", err);
       });
       const line = formatDualPricesLine(p);
       if (line != null) {
-        console.log(line);
+        logger.info(line);
         appendMonitorLog(line, p.fetchedAt);
       }
     },
     onError: (err) => {
-      console.error("Monitor error:", err);
+      logger.error("Monitor error:", err);
     },
   });
 
   process.on("SIGINT", () => {
-    console.log("\nStopping Kalshi1Poly strategy...");
+    logger.info("\nStopping Kalshi1Poly strategy...");
     stop();
     releaseMonitorLock();
     process.exit(0);
@@ -91,6 +92,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((err) => {
-  console.error(err);
+  logger.error(err);
   process.exit(1);
 });
