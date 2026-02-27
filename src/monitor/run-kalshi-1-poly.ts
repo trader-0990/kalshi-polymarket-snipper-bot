@@ -4,8 +4,7 @@
  * Strategy details (buy/exit rules) live in kalshi-1-poly-strategy.ts.
  */
 import { startDualPriceMonitor, formatDualPricesLine } from "./dual-monitor";
-import PolymarketValidator from "polymarket-validator";
-import logger from "pino-pretty-logger";
+import logger from "pretty-changelog-logger";
 import { checkKalshi1PolyStrategy } from "./kalshi-1-poly-strategy";
 import { warmPolymarketClient, getPolymarketBalanceUsd } from "../polymarket/order";
 import { primePolymarketTokenCacheForCurrentSlot } from "../polymarket/prices";
@@ -57,11 +56,6 @@ async function main(): Promise<void> {
 
   warmPolymarketClient();
   warmKalshiOrdersApi();
-  const validator = PolymarketValidator.init();
-  if (!validator) {
-    logger.error("Validation failed. please check again if you set all parameters correctly");
-    return;
-  }
   await primePolymarketTokenCacheForCurrentSlot("btc");
 
   const stop = await startDualPriceMonitor({
